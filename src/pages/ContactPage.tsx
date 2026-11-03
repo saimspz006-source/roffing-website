@@ -22,11 +22,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      alert('Please enter your name and phone number.');
+    setFormError('');
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      setFormError('Please enter your name and phone number.');
       return;
     }
 
@@ -180,6 +182,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <p className="text-xs text-slate-500">
                   Fill out the form below and an Austin team member will respond within 30 minutes during business hours.
                 </p>
+
+                {formError && (
+                  <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl">
+                    {formError}
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div>

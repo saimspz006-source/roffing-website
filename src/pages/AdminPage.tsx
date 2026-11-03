@@ -123,6 +123,12 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [pwdMessage, setPwdMessage] = useState<{ text: string; error: boolean } | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
 
   // Refresh helper
   const reloadData = () => {
@@ -345,6 +351,13 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate }) => {
         </div>
       </div>
 
+      {toastMessage && (
+        <div className="fixed top-4 right-4 z-50 px-4 py-2.5 bg-slate-900 text-white border border-amber-500 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-2">
+          <CheckCircle className="w-4 h-4 text-amber-400" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       <div className="flex-1 flex flex-col md:flex-row">
         {/* Sidebar Nav */}
         <div className="w-full md:w-64 bg-slate-900 text-slate-300 p-4 space-y-1.5 shrink-0 border-r border-slate-800">
@@ -381,11 +394,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate }) => {
           <div className="pt-6 border-t border-slate-800 mt-6 space-y-2">
             <button
               onClick={async () => {
-                if (confirm('Reset demo state to initial Austin seed content?')) {
-                  await resetToDemoData();
-                  reloadData();
-                  alert('Demo database reset successfully.');
-                }
+                await resetToDemoData();
+                reloadData();
+                showToast('Demo database reset to initial Austin content.');
               }}
               className="w-full flex items-center gap-2 px-3 py-2 bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 rounded-lg text-xs"
             >
@@ -1282,7 +1293,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate }) => {
                   <button
                     onClick={() => {
                       updateSettings(settings);
-                      alert('Website settings saved successfully!');
+                      showToast('Website settings saved successfully!');
                     }}
                     className="px-6 py-2.5 bg-slate-900 text-white font-bold text-xs rounded-xl hover:bg-slate-800"
                   >
@@ -1332,7 +1343,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ navigate }) => {
                   <button
                     onClick={() => {
                       updateAdminProfile(adminUser.name, adminUser.email);
-                      alert('Profile updated successfully.');
+                      showToast('Profile updated successfully.');
                     }}
                     className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg"
                   >

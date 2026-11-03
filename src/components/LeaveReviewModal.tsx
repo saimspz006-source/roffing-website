@@ -22,6 +22,7 @@ export const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({
   const [photo, setPhoto] = useState<string | undefined>(undefined);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   if (!isOpen) return null;
 
@@ -37,8 +38,9 @@ export const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
     if (!author.trim() || !reviewText.trim()) {
-      alert('Please enter your name and review message.');
+      setFormError('Please enter your name and review message.');
       return;
     }
 
@@ -96,6 +98,11 @@ export const LeaveReviewModal: React.FC<LeaveReviewModalProps> = ({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {formError && (
+                <div className="p-2.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg">
+                  {formError}
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Overall Rating *</label>
                 <div className="flex items-center gap-1.5">

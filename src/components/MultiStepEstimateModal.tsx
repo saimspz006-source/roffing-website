@@ -33,16 +33,19 @@ export const MultiStepEstimateModal: React.FC<MultiStepEstimateModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [estimateId, setEstimateId] = useState('');
+  const [uploadError, setUploadError] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   if (!isOpen) return null;
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
+    setUploadError('');
 
     Array.from(files).forEach((file) => {
       if (file.size > 5 * 1024 * 1024) {
-        alert(`File ${file.name} is larger than 5MB.`);
+        setUploadError(`File ${file.name} is larger than 5MB limit.`);
         return;
       }
       const reader = new FileReader();
@@ -126,7 +129,7 @@ export const MultiStepEstimateModal: React.FC<MultiStepEstimateModalProps> = ({
       setIsSubmitted(true);
     } catch (err) {
       console.error(err);
-      alert('An error occurred submitting your estimate. Please call us directly.');
+      setSubmitError('An error occurred submitting your estimate. Please call us directly at (512) 555-0148.');
     } finally {
       setIsSubmitting(false);
     }
@@ -437,6 +440,12 @@ export const MultiStepEstimateModal: React.FC<MultiStepEstimateModalProps> = ({
                     <p className="text-[11px] text-slate-400 mt-1">PNG, JPG, HEIC up to 5MB each</p>
                   </div>
 
+                  {uploadError && (
+                    <div className="p-2.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg">
+                      {uploadError}
+                    </div>
+                  )}
+
                   {formData.photos.length > 0 && (
                     <div className="grid grid-cols-4 gap-2 pt-2">
                       {formData.photos.map((photo, idx) => (
@@ -518,6 +527,12 @@ export const MultiStepEstimateModal: React.FC<MultiStepEstimateModalProps> = ({
                     <div>• Drone photography & attic moisture scan included</div>
                     <div>• No pressure, itemized proposal guaranteed for 30 days</div>
                   </div>
+                </div>
+              )}
+
+              {submitError && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg">
+                  {submitError}
                 </div>
               )}
 
