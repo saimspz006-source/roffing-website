@@ -1,0 +1,6 @@
+{
+  "name": "Summit Pro Roofing - Austin TX",
+  "description": "Premium, high-converting roofing contractor website for Austin, Texas specializing in roof repair, replacement, storm damage, metal and commercial roofing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
